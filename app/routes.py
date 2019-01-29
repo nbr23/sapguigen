@@ -13,7 +13,9 @@ def generate():
     root = parser.parse_logon_tree('<SAPTREE><Nodes><Favorites name="Favorites" expanded="1"/><Shortcuts name="Shortcuts" expanded="1"/><Connections name="Connections" expanded="1"/></Nodes></SAPTREE>', slist)
     parser.insert_nodes(root, 'Connections', request.form['sap_systems'])
     parser.get_instances(root, instances)
-    return Response(parser.get_SAPUILandscape(root, instances), status=200, mimetype='text/xml')
+    response = Response(parser.get_SAPUILandscape(root, instances), status=200, mimetype='text/xml')
+    response.headers['Content-Disposition'] = 'attachment; filename="SAPUILandscape.xml"'
+    return response
 
 @app.route('/')
 def index():
